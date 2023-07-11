@@ -22,8 +22,8 @@ from sklearn.metrics import pairwise_distances
 ############################
 
 class Gridding:
-
-    def prediction_grid(xmin, xmax, ymin, ymax, res):
+    @classmethod
+    def prediction_grid(cls, xmin, xmax, ymin, ymax, res):
         """
         Make prediction grid
         
@@ -58,7 +58,8 @@ class Gridding:
         
         return prediction_grid_xy
  
-    def make_grid(xmin, xmax, ymin, ymax, res):
+    @classmethod
+    def make_grid(cls, xmin, xmax, ymin, ymax, res):
         """
         Generate coordinates for output of gridded data  
         
@@ -96,8 +97,9 @@ class Gridding:
         prediction_grid_xy = np.concatenate((x,y), axis = 1)
         
         return prediction_grid_xy, cols, rows
-    
-    def grid_data(df, xx, yy, zz, res):
+
+    @classmethod    
+    def grid_data(cls, df, xx, yy, zz, res):
         """
         Grid conditioning data
         
@@ -221,8 +223,8 @@ def rbf_trend(grid_matrix, smooth_factor, res):
 ####################################
 
 class NearestNeighbor:
-
-    def center(arrayx, arrayy, centerx, centery):
+    @classmethod
+    def center(cls, arrayx, arrayy, centerx, centery):
         """
         Shift data points so that grid cell of interest is at the origin
         
@@ -249,7 +251,8 @@ class NearestNeighbor:
         
         return centered_array
 
-    def distance_calculator(centered_array):
+    @classmethod
+    def distance_calculator(cls, centered_array):
         """
         Compute distances between coordinates and the origin
         
@@ -268,7 +271,8 @@ class NearestNeighbor:
         
         return dist
 
-    def angle_calculator(centered_array):
+    @classmethod
+    def angle_calculator(cls, centered_array):
         """
         Compute angles between coordinates and the origin
         
@@ -286,8 +290,9 @@ class NearestNeighbor:
         angles = np.arctan2(centered_array[0], centered_array[1])
         
         return angles
-    
-    def nearest_neighbor_search(radius, num_points, loc, data2):
+
+    @classmethod    
+    def nearest_neighbor_search(cls, radius, num_points, loc, data2):
         """
         Nearest neighbor octant search
         
@@ -330,8 +335,9 @@ class NearestNeighbor:
         near = smallest[~np.isnan(smallest)].reshape(-1,3) 
         
         return near
-    
-    def nearest_neighbor_search_cluster(radius, num_points, loc, data2):
+
+    @classmethod    
+    def nearest_neighbor_search_cluster(cls, radius, num_points, loc, data2):
         """
         Nearest neighbor octant search when doing sgs with clusters
         
@@ -379,7 +385,8 @@ class NearestNeighbor:
         
         return near, cluster_number
 
-    def nearest_neighbor_secondary(loc, data2):
+    @classmethod
+    def nearest_neighbor_secondary(cls, loc, data2):
         """
         Find the neareset neighbor secondary data point to grid cell of interest
         
@@ -408,7 +415,8 @@ class NearestNeighbor:
         
         return nearest_second
 
-    def find_colocated(df1, xx1, yy1, zz1, df2, xx2, yy2, zz2): 
+    @classmethod
+    def find_colocated(cls, df1, xx1, yy1, zz1, df2, xx2, yy2, zz2): 
         """
         Find colocated data between primary and secondary variables
         
@@ -573,8 +581,8 @@ def make_rotation_matrix(azimuth, major_range, minor_range):
 ###########################
 
 class Covariance:
-    
-    def covar(effective_lag, sill, nug, vtype):
+    @classmethod    
+    def covar(cls, effective_lag, sill, nug, vtype):
         """
         Compute covariance
         
@@ -609,7 +617,8 @@ class Covariance:
             raise AttributeError(f"vtype must be 'Exponential', 'Gaussian', or 'Spherical'")
         return c
 
-    def make_covariance_matrix(coord, vario, rotation_matrix):
+    @classmethod
+    def make_covariance_matrix(cls, coord, vario, rotation_matrix):
         """
         Make covariance matrix showing covariances between each pair of input coordinates
         
@@ -639,7 +648,8 @@ class Covariance:
 
         return covariance_matrix
 
-    def make_covariance_array(coord1, coord2, vario, rotation_matrix):
+    @classmethod
+    def make_covariance_array(cls, coord1, coord2, vario, rotation_matrix):
         """
         Make covariance array showing covariances between each data points and grid cell of interest
         
@@ -678,8 +688,8 @@ class Covariance:
 ######################################
 
 class Interpolation: 
-
-    def skrige(prediction_grid, df, xx, yy, zz, num_points, vario, radius):
+    @classmethod
+    def skrige(cls, prediction_grid, df, xx, yy, zz, num_points, vario, radius):
         """
         Simple kriging interpolation
         
@@ -756,7 +766,8 @@ class Interpolation:
                 var_sk[z] = 0
         return est_sk, var_sk
 
-    def okrige(prediction_grid, df, xx, yy, zz, num_points, vario, radius):
+    @classmethod
+    def okrige(cls, prediction_grid, df, xx, yy, zz, num_points, vario, radius):
         """
         Ordinary kriging interpolation
         
@@ -837,8 +848,9 @@ class Interpolation:
                 est_ok[z] = df['Z'].values[np.where(test_idx==2)[0][0]]
                 var_ok[z] = 0   
         return est_ok, var_ok
-  
-    def skrige_sgs(prediction_grid, df, xx, yy, zz, num_points, vario, radius):
+
+    @classmethod
+    def skrige_sgs(cls, prediction_grid, df, xx, yy, zz, num_points, vario, radius):
         """
         Sequential Gaussian simulation using simple kriging 
         
@@ -917,8 +929,9 @@ class Interpolation:
                                              'Z': [sgs[z]]})], sort=False) 
 
         return sgs
-   
-    def okrige_sgs(prediction_grid, df, xx, yy, zz, num_points, vario, radius):
+
+    @classmethod
+    def okrige_sgs(cls, prediction_grid, df, xx, yy, zz, num_points, vario, radius):
         """
         Sequential Gaussian simulation using ordinary kriging 
         
@@ -1005,8 +1018,8 @@ class Interpolation:
 
         return sgs
 
-
-    def cluster_sgs(prediction_grid, df, xx, yy, zz, kk, num_points, df_gamma, radius):
+    @classmethod
+    def cluster_sgs(cls, prediction_grid, df, xx, yy, zz, kk, num_points, df_gamma, radius):
         """
         Sequential Gaussian simulation where variogram parameters are different for each k cluster. Uses simple kriging 
         
@@ -1095,7 +1108,8 @@ class Interpolation:
 
         return sgs
 
-    def cokrige_mm1(prediction_grid, df1, xx1, yy1, zz1, df2, xx2, yy2, zz2, num_points, vario, radius, corrcoef):
+    @classmethod
+    def cokrige_mm1(cls, prediction_grid, df1, xx1, yy1, zz1, df2, xx2, yy2, zz2, num_points, vario, radius, corrcoef):
         """
         Simple collocated cokriging under Markov model 1 assumptions
         
@@ -1206,7 +1220,8 @@ class Interpolation:
 
         return est_cokrige, var_cokrige
 
-    def cosim_mm1(prediction_grid, df1, xx1, yy1, zz1, df2, xx2, yy2, zz2, num_points, vario, radius, corrcoef):
+    @classmethod
+    def cosim_mm1(cls, prediction_grid, df1, xx1, yy1, zz1, df2, xx2, yy2, zz2, num_points, vario, radius, corrcoef):
         """
         Cosimulation under Markov model 1 assumptions
         
