@@ -135,7 +135,7 @@ class Gridding:
         ymax = df['Y'].max()
         
         # make array of grid coordinates
-        grid_coord, cols, rows = Gridding.make_grid(xmin, xmax, ymin, ymax, res) 
+        grid_coord, cols, rows = cls.make_grid(xmin, xmax, ymin, ymax, res) 
 
         df = df[['X','Y','Z']] 
         np_data = df.to_numpy() 
@@ -316,10 +316,10 @@ class NearestNeighbor:
         locx = loc[0]
         locy = loc[1]
         data = data2.copy()
-        centered_array = NearestNeighbor.center(data['X'].values, data['Y'].values, 
+        centered_array = cls.center(data['X'].values, data['Y'].values, 
                                 locx, locy)
-        data["dist"] = NearestNeighbor.distance_calculator(centered_array) 
-        data["angles"] = NearestNeighbor.angle_calculator(centered_array)
+        data["dist"] = cls.distance_calculator(centered_array) 
+        data["angles"] = cls.angle_calculator(centered_array)
         data = data[data.dist < radius] 
         data = data.sort_values('dist', ascending = True)
         bins = [-math.pi, -3*math.pi/4, -math.pi/2, -math.pi/4, 0, 
@@ -363,10 +363,10 @@ class NearestNeighbor:
         locx = loc[0]
         locy = loc[1]
         data = data2.copy()
-        centered_array = NearestNeighbor.center(data['X'].values, data['Y'].values, 
+        centered_array = cls.center(data['X'].values, data['Y'].values, 
                                 locx, locy)
-        data["dist"] = NearestNeighbor.distance_calculator(centered_array)
-        data["angles"] = NearestNeighbor.angle_calculator(centered_array)
+        data["dist"] = cls.distance_calculator(centered_array)
+        data["angles"] = cls.angle_calculator(centered_array)
         data = data[data.dist < radius] 
         data = data.sort_values('dist', ascending = True)
         data = data.reset_index() 
@@ -406,9 +406,9 @@ class NearestNeighbor:
         locx = loc[0]
         locy = loc[1]
         data = data2.copy()
-        centered_array = NearestNeighbor.center(data['X'].values, data['Y'].values, 
+        centered_array = cls.center(data['X'].values, data['Y'].values, 
                                 locx, locy)
-        data["dist"] = NearestNeighbor.distance_calculator(centered_array)
+        data["dist"] = cls.distance_calculator(centered_array)
         data = data.sort_values('dist', ascending = True) 
         data = data.reset_index() 
         nearest_second = data.iloc[0][['X','Y','Z']].values 
@@ -644,7 +644,7 @@ class Covariance:
         vtype = vario[5]
         mat = np.matmul(coord, rotation_matrix)
         effective_lag = pairwise_distances(mat,mat) 
-        covariance_matrix = Covariance.covar(effective_lag, sill, nug, vtype)
+        covariance_matrix = cls.covar(effective_lag, sill, nug, vtype)
 
         return covariance_matrix
 
@@ -677,7 +677,7 @@ class Covariance:
         mat1 = np.matmul(coord1, rotation_matrix) 
         mat2 = np.matmul(coord2.reshape(-1,2), rotation_matrix) 
         effective_lag = np.sqrt(np.square(mat1 - mat2).sum(axis=1))
-        covariance_array = Covariance.covar(effective_lag, sill, nug, vtype)
+        covariance_array = cls.covar(effective_lag, sill, nug, vtype)
 
         return covariance_array
 
