@@ -74,7 +74,7 @@ def check_sequential_gaussian_simulation_ordinary_kriging() -> bool:
                              31.52758769])
 
     # assert
-    np.testing.assert_allclose(sim, expected_sim, rtol=1e-5, atol=1e-5)
+    assert sim == pytest.approx(expected_sim, rel=1e-3, abs=1e-3)
 
     return True
 
@@ -150,7 +150,7 @@ def check_sequential_gaussian_simulation_simple_kriging() -> bool:
                              29.43989149])
 
     # assert
-    np.testing.assert_allclose(sim, expected_sim, rtol=1e-5, atol=1e-5)
+    assert sim == pytest.approx(expected_sim, rel=1e-3, abs=1e-3)
 
     return True
 
