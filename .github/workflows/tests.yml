@@ -24,7 +24,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install GStatSim
         run: |
-          python3 -m pip install --upgrade pip
+          python3 pip install scipy
           python3 setup.py install
       - name: Run tests
         run: pytest
