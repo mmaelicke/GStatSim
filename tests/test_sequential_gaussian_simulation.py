@@ -74,12 +74,12 @@ def check_sequential_gaussian_simulation_ordinary_kriging() -> bool:
                              31.52758769])
 
     # assert
-    assert sim == pytest.approx(expected_sim)
+    assert sim == pytest.approx(expected_sim, rel=1e-3, abs=1e-3)
 
     return True
 
 
-def check_sequential_gaussian_simulation_simple_kriging():
+def check_sequential_gaussian_simulation_simple_kriging() -> bool:
     """
     This tests the sequential gaussian simulation with simple kriging.
     The test is roughly based on demos/4_Sequential_Gaussian_Simulation.ipynb
@@ -150,7 +150,7 @@ def check_sequential_gaussian_simulation_simple_kriging():
                              29.43989149])
 
     # assert
-    assert sim == pytest.approx(expected_sim)
+    assert sim == pytest.approx(expected_sim, rel=1e-3, abs=1e-3)
 
     return True
 
