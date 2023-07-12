@@ -33,6 +33,6 @@ setup(
     license = 'MIT',
     classifiers = classifiers,
     py_modules = ['gstatsim'],
-    python_requires = '>=3',
+    python_requires = '>=3.8',
     install_requires = dependencies,
 )
