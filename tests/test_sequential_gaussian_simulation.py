@@ -8,7 +8,7 @@ import numpy as np
 import gstatsim as gs
 
 
-def check_sequential_gaussian_simulation_ordinary_kriging() -> bool:
+def test_sequential_gaussian_simulation_ordinary_kriging() -> bool:
     """
     This tests the sequential gaussian simulation with ordinary kriging.
     The test is roughly based on demos/4_Sequential_Gaussian_Simulation.ipynb
@@ -72,10 +72,8 @@ def check_sequential_gaussian_simulation_ordinary_kriging() -> bool:
     # assert
     np.testing.assert_array_almost_equal(sim, expected_sim, decimal=1)
 
-    return True
 
-
-def check_sequential_gaussian_simulation_simple_kriging() -> bool:
+def test_sequential_gaussian_simulation_simple_kriging() -> bool:
     """
     This tests the sequential gaussian simulation with simple kriging.
     The test is roughly based on demos/4_Sequential_Gaussian_Simulation.ipynb
@@ -144,13 +142,7 @@ def check_sequential_gaussian_simulation_simple_kriging() -> bool:
     # assert
     np.testing.assert_array_almost_equal(sim, expected_sim, decimal=1)
 
-    return True
 
-
-def test_sequential_gaussian_simulation():
-    """
-    Execute tests of sequential gaussian simulation.
-
-    """
-    assert check_sequential_gaussian_simulation_ordinary_kriging()
-    assert check_sequential_gaussian_simulation_simple_kriging()
+if __name__ == '__main__':
+    import pytest
+    pytest.main()
