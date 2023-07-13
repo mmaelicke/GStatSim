@@ -26,5 +26,6 @@ jobs:
         run: |
           pip install scipy
           python3 setup.py install
+          pip install pytest
       - name: Run tests
         run: pytest

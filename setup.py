@@ -14,8 +14,7 @@ dependencies = [
     'pandas>=1.1.1',
     'scipy>=1.7.0',
     'tqdm>=3',
-    'scikit-learn>=1.1.2',
-    'pytest>=7.1.3'
+    'scikit-learn>=1.1.2'
 ]
 
 with open('README.md', 'r') as f:
