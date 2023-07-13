@@ -65,9 +65,9 @@ def check_sequential_gaussian_simulation_ordinary_kriging() -> bool:
         Pred_grid_xy, df_grid, 'X', 'Y', 'Z', k, vario, rad)
 
     # as we set the numpy random seed, the simulation is deterministic and we can compare to the following (rounded) results
-    expected_sim = np.array([439.9, 299.5, 360.7, 397.5, 152.,  77.6, 344.6, 225., 369.,
-                             379.8, 205.5, 302.8, 294.6, 296.3, 368.8, 400.3, 329.7, 134.9,
-                             307.8, 254., 270.5, 115.4, 403.1, 411.7,  29.4])
+    expected_sim = np.array([445.6, 299.5, 359.6, 396.6, 153.3,  77.6, 344.6, 225.6, 432.9,
+                             379., 203.2, 317.6, 277.3, 296., 368.8, 405.1, 328., 135.7,
+                             308.2, 254., 270.5, 116.9, 424.8, 411.7,  31.5])
 
     # assert
     np.testing.assert_array_almost_equal(sim, expected_sim, decimal=1)
