@@ -12,6 +12,7 @@ import math
 from scipy.spatial import distance_matrix
 from scipy.interpolate import Rbf
 from tqdm import tqdm
+import random
 from sklearn.metrics import pairwise_distances
 
 ############################
@@ -876,7 +877,7 @@ class Interpolation:
 
         df = df.rename(columns = {xx: 'X', yy: 'Y', zz: 'Z'})
         xyindex = np.arange(len(prediction_grid)) 
-        np.random.shuffle(xyindex)
+        random.shuffle(xyindex)
         mean_1 = df['Z'].mean() 
         var_1 = vario[4]
         sgs = np.zeros(shape=len(prediction_grid)) 
@@ -956,7 +957,7 @@ class Interpolation:
 
         df = df.rename(columns = {xx: "X", yy: "Y", zz: "Z"}) 
         xyindex = np.arange(len(prediction_grid)) 
-        np.random.shuffle(xyindex)
+        random.shuffle(xyindex)
         var_1 = vario[4]
         sgs = np.zeros(shape=len(prediction_grid))  
 
@@ -1040,7 +1041,7 @@ class Interpolation:
 
         df = df.rename(columns = {xx: "X", yy: "Y", zz: "Z", kk: "K"})  
         xyindex = np.arange(len(prediction_grid)) 
-        np.random.shuffle(xyindex)
+        random.shuffle(xyindex)
         mean_1 = np.average(df["Z"].values) 
         sgs = np.zeros(shape=len(prediction_grid)) 
 
@@ -1254,7 +1255,7 @@ class Interpolation:
         df1 = df1.rename(columns = {xx1: "X", yy1: "Y", zz1: "Z"}) 
         df2 = df2.rename(columns = {xx2: "X", yy2: "Y", zz2: "Z"})
         xyindex = np.arange(len(prediction_grid)) 
-        np.random.shuffle(xyindex)
+        random.shuffle(xyindex)
 
         mean_1 = np.average(df1['Z']) 
         var_1 = np.var(df1['Z']) # replaced var_1 = vario[4]
