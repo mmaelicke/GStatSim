@@ -4,11 +4,20 @@ import os
 
 import pandas as pd
 import numpy as np
+import random
 
 import gstatsim as gs
 
 
-def test_sequential_gaussian_simulation_ordinary_kriging() -> bool:
+# def test_ordinary_kriging():
+#     pass
+
+
+# def test_simple_kriging():
+#     pass
+
+
+def test_sequential_gaussian_simulation_ordinary_kriging():
     """
     This tests the sequential gaussian simulation with ordinary kriging.
     The test is roughly based on demos/4_Sequential_Gaussian_Simulation.ipynb
@@ -37,7 +46,9 @@ def test_sequential_gaussian_simulation_ordinary_kriging() -> bool:
 
     Pred_grid_xy = gs.Gridding.prediction_grid(xmin, xmax, ymin, ymax, res)
 
-    # set random seed
+    # set random seeds
+    # this line can be removed, if we decide to use numpy.random.shuffle instead of random.shuffle
+    random.seed(42)
     np.random.seed(42)
 
     # pick ("random") points from grid
@@ -65,15 +76,15 @@ def test_sequential_gaussian_simulation_ordinary_kriging() -> bool:
         Pred_grid_xy, df_grid, 'X', 'Y', 'Z', k, vario, rad)
 
     # as we set the numpy random seed, the simulation is deterministic and we can compare to the following (rounded) results
-    expected_sim = np.array([445.6, 299.5, 359.6, 396.6, 153.3,  77.6, 344.6, 225.6, 432.9,
-                             379., 203.2, 317.6, 277.3, 296., 368.8, 405.1, 328., 135.7,
-                             308.2, 254., 270.5, 116.9, 424.8, 411.7,  31.5])
+    expected_sim = np.array([445.5, 299.5, 358.9, 395.9, 153.5,  78.3, 344.5, 226.1, 432.2,
+                             377.1, 202.9, 319.3, 276.9, 296., 368.8, 405.2, 328.2, 134.6,
+                             307.8, 252.3, 270.5, 117.9, 425., 411.6,  31.2])
 
     # assert
     np.testing.assert_array_almost_equal(sim, expected_sim, decimal=1)
 
 
-def test_sequential_gaussian_simulation_simple_kriging() -> bool:
+def test_sequential_gaussian_simulation_simple_kriging():
     """
     This tests the sequential gaussian simulation with simple kriging.
     The test is roughly based on demos/4_Sequential_Gaussian_Simulation.ipynb
@@ -108,6 +119,8 @@ def test_sequential_gaussian_simulation_simple_kriging() -> bool:
     Pred_grid_xy = gs.Gridding.prediction_grid(xmin, xmax, ymin, ymax, res)
 
     # set random seed
+    # this line can be removed, if we decide to use numpy.random.shuffle instead of random.shuffle
+    random.seed(42)
     np.random.seed(42)
 
     # pick ("random") points from grid
@@ -135,9 +148,9 @@ def test_sequential_gaussian_simulation_simple_kriging() -> bool:
         Pred_grid_xy, df_grid, 'X', 'Y', 'Z', k, vario, rad)
 
     # as we set the numpy random seed, the simulation is deterministic and we can compare to the following (rounded) results
-    expected_sim = np.array([439.9, 299.5, 360.7, 397.5, 152.,  77.6, 344.6, 225., 369.,
-                             379.8, 205.5, 302.8, 294.6, 296.3, 368.8, 400.3, 329.7, 134.9,
-                             307.8, 254., 270.5, 115.4, 403.1, 411.7,  29.4])
+    expected_sim = np.array([440.3, 299.5, 360., 396.7, 152.1,  78.3, 344.5, 225.6, 368.2,
+                             378.1, 205.2, 304.5, 294.2, 296.3, 368.8, 400.4, 329.9, 133.9,
+                             307.4, 252.2, 270.5, 116.5, 403.3, 411.6,  29.1])
 
     # assert
     np.testing.assert_array_almost_equal(sim, expected_sim, decimal=1)
