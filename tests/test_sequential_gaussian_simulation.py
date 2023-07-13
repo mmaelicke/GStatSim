@@ -16,7 +16,7 @@ def check_sequential_gaussian_simulation_ordinary_kriging() -> bool:
     """
     # read demo data
     data_file_path = os.path.join(os.path.dirname(
-        os.path.realpath(__file__)), './data/greenland_test_data.csv')
+        os.path.realpath(__file__)), '../demos/data/greenland_test_data.csv')
     df_bed = pd.read_csv(data_file_path)
 
     # Grid and transform data, compute variogram parameters
@@ -82,7 +82,7 @@ def check_sequential_gaussian_simulation_simple_kriging() -> bool:
 
     """
     data_file_path = os.path.join(os.path.dirname(
-        os.path.realpath(__file__)), './data/greenland_test_data.csv')
+        os.path.realpath(__file__)), '../demos/data/greenland_test_data.csv')
     df_bed = pd.read_csv(data_file_path)
 
     # Grid and transform data, compute variogram parameters
