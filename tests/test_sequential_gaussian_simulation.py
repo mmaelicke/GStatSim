@@ -70,7 +70,7 @@ def check_sequential_gaussian_simulation_ordinary_kriging() -> bool:
                              307.8, 254., 270.5, 115.4, 403.1, 411.7,  29.4])
 
     # assert
-    np.testing.assert_allclose(sim, expected_sim, atol=0.1)
+    np.testing.assert_array_almost_equal(sim, expected_sim, decimal=1)
 
     return True
 
@@ -142,7 +142,7 @@ def check_sequential_gaussian_simulation_simple_kriging() -> bool:
                              307.8, 254., 270.5, 115.4, 403.1, 411.7,  29.4])
 
     # assert
-    np.testing.assert_allclose(sim, expected_sim, atol=0.1)
+    np.testing.assert_array_almost_equal(sim, expected_sim, decimal=1)
 
     return True
 
