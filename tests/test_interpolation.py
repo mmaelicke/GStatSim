@@ -9,12 +9,138 @@ import random
 import gstatsim as gs
 
 
-# def test_ordinary_kriging():
-#     pass
+def test_ordinary_kriging():
+    """
+    Test of ordinary kriging.
+    The test is roughly based on demos/3_Simple_kriging_and_ordinary_kriging.ipynb
+
+    """
+    # read demo data
+    data_file_path = os.path.join(os.path.dirname(
+        os.path.realpath(__file__)), '../demos/data/greenland_test_data.csv')
+    df_bed = pd.read_csv(data_file_path)
+
+    # grid data to 100 m resolution and remove coordinates with NaNs
+    res = 1000
+    df_grid, _, _, __import__ = gs.Gridding.grid_data(
+        df_bed, 'X', 'Y', 'Bed', res)
+    df_grid = df_grid[df_grid["Z"].isnull() == False]
+
+    # define coordinate grid
+    xmin = np.min(df_grid['X'])
+    xmax = np.max(df_grid['X'])     # min and max x values
+    ymin = np.min(df_grid['Y'])
+    ymax = np.max(df_grid['Y'])     # min and max y values
+
+    Pred_grid_xy = gs.Gridding.prediction_grid(xmin, xmax, ymin, ymax, res)
+
+    # set random seed
+    np.random.seed(42)
+
+    # pick ("random") points from grid
+    index_points = np.random.choice(
+        range(len(Pred_grid_xy)), size=25, replace=False)
+    Pred_grid_xy = Pred_grid_xy[index_points, :]
+
+    # set variogram parameters
+    azimuth = 0
+    nugget = 0
+
+    # the major and minor ranges are the same in this example because it is isotropic
+    major_range = 19236.
+    minor_range = 19236.
+    sill = 22399.
+    vtype = 'Exponential'
+
+    # save variogram parameters as a list
+    vario = [azimuth, nugget, major_range, minor_range, sill, vtype]
+
+    k = 100         # number of neighboring data points used to estimate a given point
+    rad = 50000     # 50 km search radius
+
+    # est_SK is the estimate and var_SK is the variance
+    est_SK, var_SK = gs.Interpolation.okrige(
+        Pred_grid_xy, df_grid, 'X', 'Y', 'Z', k, vario, rad)
+
+    expected_est = np.array([443.9, 299.5, 356.6, 389.8, 160.5,  82.2, 333.4, 228.8, 413.2,
+                            376., 201.4, 319.4, 286.2, 298.5, 368.8, 399.2, 337., 132.3,
+                            305.9, 247.2, 270.5, 115.1, 417.5, 411.4,  32.7])
+
+    expected_var = np.array([6525.9,     0.,  8308.6, 12133.4, 11820.4,  8437.8, 13252.4,
+                            11871.6, 19809.1,  8048.9,  6762.9, 20021.6, 15386.6, 10189.8,
+                            0.,  6480.3, 12443.7,  5510.,  6256.2, 13197.6,     0.,
+                            10845.6, 17350.8,  3980.5,  8585.3])
+
+    # assert
+    np.testing.assert_array_almost_equal(est_SK, expected_est, decimal=1)
+    np.testing.assert_array_almost_equal(var_SK, expected_var, decimal=1)
 
 
-# def test_simple_kriging():
-#     pass
+def test_simple_kriging():
+    """
+    Test of simple kriging.
+    The test is roughly based on demos/3_Simple_kriging_and_ordinary_kriging.ipynb
+
+    """
+    # read demo data
+    data_file_path = os.path.join(os.path.dirname(
+        os.path.realpath(__file__)), '../demos/data/greenland_test_data.csv')
+    df_bed = pd.read_csv(data_file_path)
+
+    # grid data to 100 m resolution and remove coordinates with NaNs
+    res = 1000
+    df_grid, _, _, _ = gs.Gridding.grid_data(
+        df_bed, 'X', 'Y', 'Bed', res)
+    df_grid = df_grid[df_grid["Z"].isnull() == False]
+
+    # define coordinate grid
+    xmin = np.min(df_grid['X'])
+    xmax = np.max(df_grid['X'])     # min and max x values
+    ymin = np.min(df_grid['Y'])
+    ymax = np.max(df_grid['Y'])     # min and max y values
+
+    Pred_grid_xy = gs.Gridding.prediction_grid(xmin, xmax, ymin, ymax, res)
+
+    # set random seed
+    np.random.seed(42)
+
+    # pick ("random") points from grid
+    index_points = np.random.choice(
+        range(len(Pred_grid_xy)), size=25, replace=False)
+    Pred_grid_xy = Pred_grid_xy[index_points, :]
+
+    # set variogram parameters
+    azimuth = 0
+    nugget = 0
+
+    # the major and minor ranges are the same in this example because it is isotropic
+    major_range = 19236.
+    minor_range = 19236.
+    sill = 22399.
+    vtype = 'Exponential'
+
+    # save variogram parameters as a list
+    vario = [azimuth, nugget, major_range, minor_range, sill, vtype]
+
+    k = 100         # number of neighboring data points used to estimate a given point
+    rad = 50000     # 50 km search radius
+
+    # est_SK is the estimate and var_SK is the variance
+    est_SK, var_SK = gs.Interpolation.skrige(
+        Pred_grid_xy, df_grid, 'X', 'Y', 'Z', k, vario, rad)
+
+    expected_est = np.array([432.3, 299.5, 354.5, 384.8, 166.9,  82.9, 327.7, 230.1, 333.,
+                            374.8, 208.7, 287., 296.2, 297.1, 368.8, 391.5, 336.4, 133.,
+                            307.3, 249.4, 270.5, 119.2, 369.9, 411.2,  38.1])
+
+    expected_var = np.array([6846.7,     0.,  8367.2, 12287., 12029.1,  8573.8, 13565.,
+                            12098.3, 20816.3,  8134.4,  7099.8, 20588.1, 15810.4, 10312.,
+                            0.,  6739., 12586.4,  5530.8,  6312., 13469.5,     0.,
+                            10969.9, 18156.7,  3992.2,  8701.3])
+
+    # assert
+    np.testing.assert_array_almost_equal(est_SK, expected_est, decimal=1)
+    np.testing.assert_array_almost_equal(var_SK, expected_var, decimal=1)
 
 
 def test_sequential_gaussian_simulation_ordinary_kriging():
